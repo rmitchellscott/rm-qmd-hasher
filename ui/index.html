@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link id="favicon" rel="icon" type="image/svg+xml" href="/favicon-light.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>reMarkable QMD Hasher</title>
+    <meta name="theme-color" id="themeColor" content="#FFFFFF"/>
+    <style>
+      :root { --font-geist-sans: system-ui, sans-serif; --font-geist-mono: monospace; }
+    </style>
+    <script>
+      (function() {
+        function updateThemeColor(isDark) {
+          const themeColor = isDark ? '#000000' : '#FFFFFF';
+          const themeColorMeta = document.getElementById('themeColor');
+          if (themeColorMeta) {
+            themeColorMeta.setAttribute('content', themeColor);
+          }
+        }
+
+        function updateFavicon(isDark) {
+          const faviconPath = isDark ? '/favicon-dark.svg' : '/favicon-light.svg';
+          const faviconEl = document.getElementById('favicon');
+          if (faviconEl) {
+            faviconEl.setAttribute('href', faviconPath);
+          }
+        }
+
+        const stored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = stored === 'light' || stored === 'dark'
+          ? stored
+          : (prefersDark ? 'dark' : 'light');
+
+        const isDark = theme === 'dark';
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+        }
+        updateThemeColor(isDark);
+        updateFavicon(isDark);
+
+        if (!stored || (stored !== 'light' && stored !== 'dark')) {
+          window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            const systemDark = e.matches;
+            if (systemDark) {
+              document.documentElement.classList.add('dark');
+            } else {
+              document.documentElement.classList.remove('dark');
+            }
+            updateThemeColor(systemDark);
+            updateFavicon(systemDark);
+          });
+        }
+
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+              const isDark = document.documentElement.classList.contains('dark');
+              updateThemeColor(isDark);
+              updateFavicon(isDark);
+            }
+          });
+        });
+
+        observer.observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ['class']
+        });
+      })();
+    </script>
+  </head>
+  <body class="antialiased">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

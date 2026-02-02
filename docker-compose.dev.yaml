@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  hash-generator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VERSION: dev
+        COMMIT: local
+        BUILD_TIME: ${BUILD_TIME:-unknown}
+    container_name: rm-qmd-hasher-dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./hashtables:/app/hashtables:ro
+    environment:
+      - PORT=8080
+      - HASHTAB_DIR=/app/hashtables
+      - GCD_HASHTAB_DIR=/app/gcd-hashtabs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 3s
+      start_period: 10s
+      retries: 3

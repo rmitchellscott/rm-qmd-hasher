@@ -1,0 +1,46 @@
+# Binaries
+rm-hash-generator
+*.exe
+*.dll
+*.so
+*.dylib
+bin/
+
+# Test binary
+*.test
+
+# Output
+*.out
+
+# Dependency directories
+vendor/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment files
+.env
+.env.local
+
+# Hashtables (device-specific source files)
+hashtables/
+
+# GCD Hashtabs (generated)
+gcd-hashtabs/
+
+# Node modules
+node_modules/
+
+# Frontend build
+ui/dist/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temp files
+*.tmp
+*.temp
