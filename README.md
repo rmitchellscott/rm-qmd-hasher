@@ -238,5 +238,6 @@ Returns application version information.
 | QMLDIFF_BINARY | ./qmldiff | Path to qmldiff CLI binary |
 
 ## License
+Copyright (C) 2026 Mitchell Scott
 
-MIT
+Licensed under the GNU Affero General Public License v3.0.
